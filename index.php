@@ -28,6 +28,9 @@ if (isset($_GET['act'])){
         case "detail":
             include "view/account-detail.php";
             break;
+        case "cart":
+            include "view/cart.php";
+            break;
     }
 }
 include "view/footer.php";

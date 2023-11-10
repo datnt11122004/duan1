@@ -36,7 +36,7 @@
                                     <div class="product">
                                         <figure class="product-media">
                                             <a href="#">
-                                                <img src="../assets/images/products/table/product-1.jpg" alt="Product image">
+                                                <img src="assets/images/products/table/product-1.jpg" alt="Product image">
                                             </a>
                                         </figure>
 
@@ -59,7 +59,7 @@
                                     <div class="product">
                                         <figure class="product-media">
                                             <a href="#">
-                                                <img src="../assets/images/products/table/product-2.jpg" alt="Product image">
+                                                <img src="assets/images/products/table/product-2.jpg" alt="Product image">
                                             </a>
                                         </figure>
 
@@ -122,12 +122,12 @@
 
                                 <tr class="summary-shipping-row">
                                     <td>
-                                        <div class="custom-control custom-radio">
+                                        <div class="custom-control custom-radio" id="price-1">
                                             <input type="radio" id="standart-shipping" name="shipping" class="custom-control-input">
                                             <label class="custom-control-label" for="standart-shipping">Standart:</label>
                                         </div><!-- End .custom-control -->
                                     </td>
-                                    <td>$10.00</td>
+                                    <td id="">$10.00</td>
                                 </tr><!-- End .summary-shipping-row -->
 
                                 <tr class="summary-shipping-row">
@@ -162,3 +162,20 @@
         </div><!-- End .cart -->
     </div><!-- End .page-content -->
 </main><!-- End .main -->
+
+<?php
+// Đọc nội dung từ tệp cart.php
+$fileContent = file_get_contents('cart.php');
+
+// Sử dụng biểu thức chính quy để tìm giá trị với id="price-1"
+$pattern = '/id="price-1">(\$[\d.]+)<\/td>/';
+
+// Tìm kiếm giá trị bằng preg_match
+if (preg_match($pattern, $fileContent, $matches)) {
+    $price1 = $matches[1];
+    echo "Giá trị từ id=\"price-1\": $price1";
+} else {
+    echo "Không tìm thấy giá trị với id=\"price-1\"";
+}
+?>
+

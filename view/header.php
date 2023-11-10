@@ -28,7 +28,7 @@
                         <i class="icon-bars"></i>
                     </button>
 
-                    <a href="../index.php" class="logo">
+                    <a href="index.php?act=home" class="logo">
                         <img src="assets/images/logo.png" alt="Molla Logo" width="105" height="25">
                     </a>
 
@@ -207,8 +207,7 @@
                             </div><!-- End .dropdown-cart-total -->
 
                             <div class="dropdown-cart-action">
-                                <a href="../cart.html" class="btn btn-primary">View Cart</a>
-                                <a href="../checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
+                                <a href="?act=cart" class="btn btn-primary">View Cart</a>
                             </div><!-- End .dropdown-cart-total -->
                         </div><!-- End .dropdown-menu -->
                     </div><!-- End .cart-dropdown -->

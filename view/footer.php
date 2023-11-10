@@ -405,6 +405,8 @@
 <script src="assets/js/jquery.elevateZoom.min.js"></script>
 <script src="assets/js/bootstrap-input-spinner.js"></script>
 <script src="assets/js/jquery.magnific-popup.min.js"></script>
+<script src="assets/js/nouislider.min.js"></script>
+<script src="assets/js/wNumb.js"></script>
 <!-- Main JS File -->
 <script src="assets/js/main.js"></script>
 </body>
