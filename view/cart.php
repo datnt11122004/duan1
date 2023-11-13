@@ -105,39 +105,24 @@
                                     <td>Subtotal:</td>
                                     <td>$160.00</td>
                                 </tr><!-- End .summary-subtotal -->
-                                <tr class="summary-shipping">
-                                    <td>Shipping:</td>
-                                    <td>&nbsp;</td>
-                                </tr>
 
+                                <form action="">
                                 <tr class="summary-shipping-row">
                                     <td>
                                         <div class="custom-control custom-radio">
                                             <input type="radio" id="free-shipping" name="shipping" class="custom-control-input">
-                                            <label class="custom-control-label" for="free-shipping">Free Shipping</label>
+                                            <label class="custom-control-label" for="free-shipping">Payment with MoMo</label>
                                         </div><!-- End .custom-control -->
                                     </td>
-                                    <td>$0.00</td>
                                 </tr><!-- End .summary-shipping-row -->
 
                                 <tr class="summary-shipping-row">
                                     <td>
                                         <div class="custom-control custom-radio" id="price-1">
                                             <input type="radio" id="standart-shipping" name="shipping" class="custom-control-input">
-                                            <label class="custom-control-label" for="standart-shipping">Standart:</label>
+                                            <label class="custom-control-label" for="standart-shipping">Payment with VNPay</label>
                                         </div><!-- End .custom-control -->
                                     </td>
-                                    <td id="">$10.00</td>
-                                </tr><!-- End .summary-shipping-row -->
-
-                                <tr class="summary-shipping-row">
-                                    <td>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="express-shipping" name="shipping" class="custom-control-input">
-                                            <label class="custom-control-label" for="express-shipping">Express:</label>
-                                        </div><!-- End .custom-control -->
-                                    </td>
-                                    <td>$20.00</td>
                                 </tr><!-- End .summary-shipping-row -->
 
                                 <tr class="summary-shipping-estimate">
@@ -150,6 +135,7 @@
                                     <td>$160.00</td>
                                 </tr><!-- End .summary-total -->
                                 </tbody>
+                                </form>
                             </table><!-- End .table table-summary -->
 
                             <a href="../checkout.html" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
@@ -163,19 +149,27 @@
     </div><!-- End .page-content -->
 </main><!-- End .main -->
 
-<?php
-// Đọc nội dung từ tệp cart.php
-$fileContent = file_get_contents('cart.php');
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".cart-product-quantity input").change(function () {
+            var quantity = $(this).val();
+            var productId = $(this).closest("tr").data("product-id"); // Thêm data-product-id vào thẻ tr để lấy ID sản phẩm
 
-// Sử dụng biểu thức chính quy để tìm giá trị với id="price-1"
-$pattern = '/id="price-1">(\$[\d.]+)<\/td>/';
-
-// Tìm kiếm giá trị bằng preg_match
-if (preg_match($pattern, $fileContent, $matches)) {
-    $price1 = $matches[1];
-    echo "Giá trị từ id=\"price-1\": $price1";
-} else {
-    echo "Không tìm thấy giá trị với id=\"price-1\"";
-}
-?>
+            // Gửi yêu cầu cập nhật lên server
+            $.ajax({
+                type: "POST",
+                url: "update_cart.php",
+                data: { productId: productId, quantity: quantity },
+                success: function (response) {
+                    // Cập nhật UI hoặc thực hiện các công việc khác nếu cần
+                    console.log(response);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+</script>
 

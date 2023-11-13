@@ -31,6 +31,9 @@ if (isset($_GET['act'])){
         case "cart":
             include "view/cart.php";
             break;
+        case "form":
+            include "view/login.php";
+            break;
     }
 }
 include "view/footer.php";
