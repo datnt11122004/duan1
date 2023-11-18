@@ -4,15 +4,6 @@ include "view/header.php";
 if (isset($_GET['act'])){
     $act = $_GET['act'];
     switch ($act){
-        case"home":
-            include "view/slide.php";
-            include "view/home-product.php";
-            include "view/brand.php";
-            include "view/categoties.php";
-            include "view/recent.php";
-            include "view/services.php";
-            include "view/cta.php";
-            break;
         case "contact":
             include "view/contact.php";
             break;
@@ -35,5 +26,14 @@ if (isset($_GET['act'])){
             include "view/login.php";
             break;
     }
+}else{
+    include "view/slide.php";
+    include "view/home-product.php";
+    include "view/brand.php";
+    include "view/categoties.php";
+    include "view/recent.php";
+    include "view/services.php";
+    include "view/cta.php";
 }
+
 include "view/footer.php";
