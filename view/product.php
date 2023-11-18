@@ -29,7 +29,7 @@
                     <div class="product-gallery product-gallery-vertical">
                         <div class="row">
                             <figure class="product-main-image">
-                                <img id="product-zoom" src="assets/images/products/8ot23w017-sk011-xl_1-u.webp" data-zoom-image="assets/images/products/product/camel-1.jpg" alt="product image">
+                                <img id="product-zoom" src="assets/images/products/single/1-big.jpg" data-zoom-image="assets/images/products/single/1-big.jpg" alt="product image">
 
                                 <a href="#" id="btn-product-gallery" class="btn-product-gallery">
                                     <i class="icon-arrows"></i>
@@ -37,8 +37,8 @@
                             </figure><!-- End .product-main-image -->
 
                             <div id="product-zoom-gallery" class="product-image-gallery">
-                                <a class="product-gallery-item active" href="#" data-image="assets/images/products/product/camel-1.jpg" data-zoom-image="assets/images/products/product/camel-1.jpg">
-                                    <img id="product-zoom" src="assets/images/products/8ot23w017-sk011-xl_1-u.webp" alt="product side">
+                                <a class="product-gallery-item active" href="#" data-image="assets/images/products/single/1-big.jpg" data-zoom-image="assets/images/products/single/1-big.jpg">
+                                    <img id="product-zoom" src="assets/images/products/single/1-big.jpg" alt="product side">
                                 </a>
 
                                 <a class="product-gallery-item" href="#" data-image="assets/images/products/single/2-big.jpg" data-zoom-image="assets/images/products/single/2-big.jpg">
