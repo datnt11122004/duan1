@@ -32,43 +32,22 @@ var ctx = document.getElementById("myAreaChart");
 var myLineChart = new Chart(ctx, {
   type: 'line',
   data: {
-<<<<<<< HEAD
+
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     datasets: [{
-      label: "Earnings",
-      lineTension: 0.3,
-      backgroundColor: "rgba(78, 115, 223, 0.05)",
-      borderColor: "rgba(78, 115, 223, 1)",
-      pointRadius: 3,
-      pointBackgroundColor: "rgba(78, 115, 223, 1)",
-      pointBorderColor: "rgba(78, 115, 223, 1)",
-      pointHoverRadius: 3,
-      pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-      pointHitRadius: 10,
-      pointBorderWidth: 2,
-      data: [0, 10000, 5000, 15000, 10000, 20000, 15000, 25000, 20000, 30000, 25000, 40000],
-=======
-    labels: productLabels,
-    datasets: [{
-      label: 'Lượt Xem',
-      borderColor: 'rgba(75, 192, 192, 1)',
-      borderWidth: 2,
-      fill: false,
-      data: viewsData,
-    }, {
-      label: 'Lượt Mua',
-      borderColor: 'rgba(255, 99, 132, 1)',
-      borderWidth: 2,
-      fill: false,
-      data: purchasesData,
-    }, {
-      label: 'Lượt bình luận',
-      borderColor: 'rgba(255, 205, 86, 1)',  // Một màu khác để phân biệt
-      borderWidth: 2,
-      fill: false,
-      data: reviewData,
->>>>>>> 3a8a39381b25008552f5818d28380d4e95b4482d
+        label: "Earnings",
+        lineTension: 0.3,
+        backgroundColor: "rgba(78, 115, 223, 0.05)",
+        borderColor: "rgba(78, 115, 223, 1)",
+        pointRadius: 3,
+        pointBackgroundColor: "rgba(78, 115, 223, 1)",
+        pointBorderColor: "rgba(78, 115, 223, 1)",
+        pointHoverRadius: 3,
+        pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+        pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+        pointHitRadius: 10,
+        pointBorderWidth: 2,
+        data: [0, 10000, 5000, 15000, 10000, 20000, 15000, 25000, 20000, 30000, 25000, 40000],
     }],
   },
   options: {
@@ -83,12 +62,10 @@ var myLineChart = new Chart(ctx, {
     },
     scales: {
       xAxes: [{
-<<<<<<< HEAD
+
         time: {
           unit: 'date'
         },
-=======
->>>>>>> 3a8a39381b25008552f5818d28380d4e95b4482d
         gridLines: {
           display: false,
           drawBorder: false
@@ -103,11 +80,9 @@ var myLineChart = new Chart(ctx, {
           padding: 10,
           // Include a dollar sign in the ticks
           callback: function(value, index, values) {
-<<<<<<< HEAD
             return '$' + number_format(value);
-=======
             return  + number_format(value);
->>>>>>> 3a8a39381b25008552f5818d28380d4e95b4482d
+
           }
         },
         gridLines: {
@@ -139,11 +114,9 @@ var myLineChart = new Chart(ctx, {
       callbacks: {
         label: function(tooltipItem, chart) {
           var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-<<<<<<< HEAD
           return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
-=======
           return datasetLabel + '' + number_format(tooltipItem.yLabel);
->>>>>>> 3a8a39381b25008552f5818d28380d4e95b4482d
+
         }
       }
     }

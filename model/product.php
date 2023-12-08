@@ -25,6 +25,16 @@ function insert_product($name_pro, $description, $img, $price, $id_category){
             VALUES ('$name_pro', '$description', '$img', '$price', '$id_category')";
     return pdo_execute($sql);
 }
-function update_product($id_product,){
+function update_product($id_product,$name_pro,$description,$img_product,$price,$id_category){
+    $sql = "UPDATE PRODUCT SET name_pro = '$name_pro', description = '$description', img = '$img_product', price ='$price', id_category ='$id_category' WHERE id_pro ='$id_product'";
+    pdo_execute($sql);
+}
+function load_img_product($id_pro){
+    $sql = "SELECT img FROM product WHERE id_pro = '$id_pro'";
+    return pdo_query($sql);
+}
 
+function load_product_cart($idList){
+    $sql = "SELECT * FROM product where id_pro in"."($idList)";
+    return pdo_query($sql);
 }

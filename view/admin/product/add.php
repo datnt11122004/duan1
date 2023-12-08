@@ -1,19 +1,19 @@
-<main class="main text-center" style="width: 60%; margin: 0 auto;">
-
-    <div class="container mt-3">
+<main class="main" style="">
+    <div class="page-content">
+        <div class="container mt-3">
         <div class="row">
             <div class="col-12">
                 <div class="mb">
                     <br>
-                    <div class="box_title" style="font-size: 25px">THÊM MỚI SẢN PHẨM</div>
+                    <div class="box_title text-center" style="font-size: 25px;">THÊM MỚI SẢN PHẨM</div>
                     <br>
                     <div class="box_content form_account">
                         <form action="index.php?act=product&action=add_pro" method="post" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="category" class="form-label">Category</label>
-                                <select class="form-select" name="category">
+                                <select class="form-control" name="category">
                                     <?php
-                                    foreach ($listdanhmuc as $category){
+                                    foreach ($listCT as $category){
                                         extract($category);
                                         echo "<option value=".$id_category.">$name_category</option>";
                                     }
@@ -34,7 +34,7 @@
 
                             <div class="mb-3">
                                 <label for="img" class="form-label">Image</label>
-                                <input type="file" class="form-control" name="img" id="img" multiple>
+                                <input type="file" class="form-control" name="img[]" id="img" multiple>
                             </div>
 
                             <div class="mb-3">
@@ -53,5 +53,5 @@
             </div>
         </div>
     </div>
-
+    </div>
 </main>
