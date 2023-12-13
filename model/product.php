@@ -3,7 +3,6 @@ function load_one_product($id_pro){
     $sql = "SELECT * FROM product p
             join  categories ct on ct.id_category = p.id_category
          where p.id_pro = '$id_pro' ";
-
     return pdo_query_one($sql);
 }
 // TRUY VẤN DỮ LIỆU LIST SẢN PHẨM
@@ -37,4 +36,11 @@ function load_img_product($id_pro){
 function load_product_cart($idList){
     $sql = "SELECT * FROM product where id_pro in"."($idList)";
     return pdo_query($sql);
+}
+
+function delete_product($id_pro){
+    $sql = "DELETE * FROM product p join 
+            review rv on rv.id_pro = p.id_pro
+            where p.id_pro = '$id_pro' ";
+    pdo_execute($sql);
 }

@@ -8,7 +8,7 @@
         </ol>
 
         <nav class="product-pager ml-auto" aria-label="Product">
-            <a class="product-pager-link product-pager-prev" href="#" aria-label="Previous" tabindex="-1">
+            <a class="product-pager-link product-pager-prev" href="#" aria-label="#" tabindex="-1">
                 <i class="icon-angle-left"></i>
                 <span>Prev</span>
             </a>
@@ -28,8 +28,13 @@
                 <div class="col-md-6">
                     <div class="product-gallery product-gallery-vertical">
                         <div class="row">
+                            <?php
+//                            var_export($product);
+                                extract($product);
+                                $array_img = explode(',',$img);
+                            ?>
                             <figure class="product-main-image">
-                                <img id="product-zoom" src="assets/images/products/single/1-big.jpg" data-zoom-image="assets/images/products/single/1-big.jpg" alt="product image">
+                                <img id="product-zoom" src="<?=$img_path_product.$array_img[0]?>" data-zoom-image="<?=$img_path_product.$array_img[0]?>" alt="product image">
 
                                 <a href="#" id="btn-product-gallery" class="btn-product-gallery">
                                     <i class="icon-arrows"></i>
@@ -37,21 +42,11 @@
                             </figure><!-- End .product-main-image -->
 
                             <div id="product-zoom-gallery" class="product-image-gallery">
-                                <a class="product-gallery-item active" href="#" data-image="assets/images/products/single/1-big.jpg" data-zoom-image="assets/images/products/single/1-big.jpg">
-                                    <img id="product-zoom" src="assets/images/products/single/1-big.jpg" alt="product side">
+                                <?php foreach ($array_img as $key => $value){?>
+                                <a class="product-gallery-item" href="#" data-image="<?=$img_path_product.$value?>" data-zoom-image="<?=$img_path_product.$value?>">
+                                    <img id="product-zoom" src="<?=$img_path_product.$value?>" alt="product image <?=$key?>">
                                 </a>
-
-                                <a class="product-gallery-item" href="#" data-image="assets/images/products/single/2-big.jpg" data-zoom-image="assets/images/products/single/2-big.jpg">
-                                    <img src="assets/images/products/single/2-big.jpg" alt="product cross">
-                                </a>
-
-                                <a class="product-gallery-item" href="#" data-image="assets/images/products/single/3-big.jpg" data-zoom-image="assets/images/products/single/3-big.jpg">
-                                    <img src="assets/images/products/single/3-big.jpg" alt="product with model">
-                                </a>
-
-                                <a class="product-gallery-item" href="#" data-image="assets/images/products/single/4-big.jpg" data-zoom-image="assets/images/products/single/4-big.jpg">
-                                    <img src="assets/images/products/single/4-big.jpg" alt="product back">
-                                </a>
+                                <?php }?>
                             </div><!-- End .product-image-gallery -->
                         </div><!-- End .row -->
                     </div><!-- End .product-gallery -->
@@ -59,7 +54,7 @@
 
                 <div class="col-md-6">
                     <div class="product-details">
-                        <h1 class="product-title">Dark yellow lace cut out swing dress</h1><!-- End .product-title -->
+                        <h1 class="product-title"><?=$name_pro?></h1><!-- End .product-title -->
 
                         <div class="ratings-container">
                             <div class="ratings">
@@ -69,23 +64,23 @@
                         </div><!-- End .rating-container -->
 
                         <div class="product-price">
-                            $84.00
+                            $<?=$price?>
                         </div><!-- End .product-price -->
 
                         <div class="product-content">
-                            <p>Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing. Sed lectus. </p>
+                            <p><?=$description?></p>
                         </div><!-- End .product-content -->
 
 
                         <div class="details-filter-row details-row-size">
                             <label for="qty">Quanity:</label>
                             <div class="product-details-quantity">
-                                <input type="number" id="qty" class="form-control" value="1"  data-decimals="0" required>
+                                <input type="number" id="qty" class="form-control" value="1" min="1" max="<?=$quantity?>" data-decimals="0" required>
                             </div><!-- End .product-details-quantity -->
                         </div><!-- End .details-filter-row -->
 
                         <div class="product-details-action">
-                            <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                            <button  class="btn-product btn-cart" data-id="<?=$id_pro?>" onclick="add_to_cart(<?=$id_pro?>,'<?=$name_pro?>',<?=$price?>,'<?=$img_path_product.$array_img[0]?>')"><span>add to cart</span></button>
 
                             <div class="details-action-wrapper">
                                 <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
@@ -336,3 +331,56 @@
         </div><!-- End .row -->
     </div><!-- End .container -->
 </div><!-- End .sticky-bar -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const mainImage = document.getElementById('product-zoom');
+
+        const galleryItems = document.querySelectorAll('.product-gallery-item');
+
+        galleryItems.forEach(item => {
+            item.addEventListener('click', function () {
+
+                const imagePath = this.getAttribute('data-image');
+
+                mainImage.src = imagePath;
+                mainImage.dataset.zoomImage = imagePath;
+
+                galleryItems.forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                this.classList.add('active');
+            });
+        });
+    });
+
+    let totalProduct = document.getElementById('totalCart');
+    function add_to_cart(id_product, name_product, price,img){
+        // console.log(id_product,name_product,price,img)
+
+        //     ajax insert cart
+        $.ajax({
+            type: 'POST',
+            url: "index.php?act=add_to_cart",
+            data:{
+                id: id_product,
+                name: name_product,
+                price_pro: price,
+                img_pro: img
+            },
+            success: function (response){
+                // console.log(response)
+                alert('Add product to cart successfully');
+                // totalProduct.innerText = response;
+                window.location.href = "index.php?act=product&id_pro="+id_product
+            },
+            error: function (error){
+                console.log(error);
+            }
+
+        });
+    }
+
+</script>

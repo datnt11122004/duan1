@@ -1,5 +1,6 @@
 <?php
 session_start();
+ob_start();
 include ("model/pdo.php");
 include ("model/review.php");
 include ("model/cart.php");
@@ -16,9 +17,8 @@ function addError($field, $message) {
     $_SESSION['error'][$field] = $message;
 }
 
-if(isset($_SESSION['user']) && isset($_SESSION['role']) && $_SESSION['role'] == 1 ){
+if( isset($_SESSION['user']) && $_SESSION['user']['role'] == 1 ){
 
-    $listCT = loadAll_category();
     include("view/admin/head.php");
     include("view/admin/header.php");
     if (isset($_GET['act'])) {
@@ -33,12 +33,12 @@ if(isset($_SESSION['user']) && isset($_SESSION['role']) && $_SESSION['role'] == 
                                 if(isset($_POST['add_category'])) {
                                     $name_category = $_POST['name_category'];
                                     if(empty($name_category)){
-                                        addError('name_category','Please fill this field');
+                                        addError('name_category','Please fill out this field');
                                     }
 
                                     if (empty($_FILES['img_category']['name'])) {
                                         $img_category = "";
-                                        addError('img_category','Please fill this field');
+                                        addError('img_category','Please fill out this field');
                                     }else {
                                         $img_category = $_FILES['img_category']['name'];
                                         $targetFile = $img_path_category . $img_category;
@@ -91,20 +91,20 @@ if(isset($_SESSION['user']) && isset($_SESSION['role']) && $_SESSION['role'] == 
                                         $targetFile = $img_path_category . $img_category;
                                         move_uploaded_file($_FILES['img_category']['tmp_name'], $targetFile);
                                     }
-                                    if(isset($_SESSION['error'])){
+
+                                    if(!isset($_SESSION['error'])){
                                         update_category($id_category, $name_category, $img_category);
-                                        echo("
+                                        echo("    
                                         <script>
-                                            alert('Update category successfully');
+                                            alert('Update category successfull');
                                             window.location.href = 'index.php?act=category'
                                         </script>
                                         ");
                                     }else{
-                                        update_category($id_category, $name_category, $img_category);
                                         echo("
                                         <script>
                                             alert('Category updated failed');
-                                            window.location.href = 'index.php?act=category'
+                                            window.location.href = 'index.php?act=category&action=update_category&id_category=$id_category'
                                         </script>
                                         ");
                                     }
@@ -116,10 +116,10 @@ if(isset($_SESSION['user']) && isset($_SESSION['role']) && $_SESSION['role'] == 
                                     include("view/admin/product/category/update.php");
                                 }
                             }
-                            break;
+                        break;
                     }
-
                 }else{
+                    $listCT = loadAll_category();
                     include "view/admin/product/category/list.php";
                 }
                 break;
@@ -136,23 +136,61 @@ if(isset($_SESSION['user']) && isset($_SESSION['role']) && $_SESSION['role'] == 
                                 $price_pro = $_POST['price_pro'];
                                 $description = $_POST['description'];
                                 $images = $_FILES["img"];
-                                $uploaded_image_paths = array();
-                                foreach ($images["name"] as $key => $image_name) {
-                                    $tmp_name = $images["tmp_name"][$key];
-                                    $img_product = $img_path_product. basename($image_name);
-
-                                    // Di chuyển tệp tin từ thư mục tạm thời đến thư mục lưu trữ
-                                    move_uploaded_file($tmp_name, $img_product);
-                                    $uploaded_image_paths[] = basename($image_name);
+                                if(empty($id_category)){
+                                    addError('category','Please fill out this field');
                                 }
-                                $image_paths_string = implode(",", $uploaded_image_paths);
-                                insert_product($name_pro, $description, $image_paths_string, $price_pro, $id_category);
-                                echo("<script>
+
+                                if(empty($name_pro)){
+                                    addError('name_pro','Please fill out this field');
+                                }
+
+                                if(empty($price_pro)){
+                                    addError('price','Please fill out this field');
+                                }
+
+                                if($price_pro <= 0 ){
+                                    addError('price','Price must be greater than 0 ');
+                                }
+                                if(!is_numeric($price_pro)){
+                                    addError('price','Price must be the number');
+                                }
+
+                                if(empty($description)){
+                                    addError('description','Please fill out this field');
+                                }
+
+                                if(empty($images)){
+                                    addError('image','Please insert images product');
+                                }else{
+                                    $uploaded_image_paths = array();
+                                    foreach ($images["name"] as $key => $image_name) {
+                                        $tmp_name = $images["tmp_name"][$key];
+                                        $img_product = $img_path_product. basename($image_name);
+
+                                        // Di chuyển tệp tin từ thư mục tạm thời đến thư mục lưu trữ
+                                        move_uploaded_file($tmp_name, $img_product);
+                                        $uploaded_image_paths[] = basename($image_name);
+                                    }
+                                    $image_paths_string = implode(",", $uploaded_image_paths);
+                                    unset($uploaded_image_paths);
+                                }
+
+                                if(!isset($_SESSION['error'])){
+                                    insert_product($name_pro, $description, $image_paths_string, $price_pro, $id_category);
+                                    $image_paths_string = '';
+                                    echo("<script>
                                         alert('Add product successfully')
                                         window.location.href = 'index.php?act=product';
                                     </script>");
+                                }else{
+                                    echo("<script>
+                                        alert('Add product failed')
+                                        window.location.href = 'index.php?act=product&action=add_product';
+                                    </script>");
+                                }
                                 exit;
                             }else{
+                                $listCT = loadAll_category();
                                 include "view/admin/product/add.php";
                             }
                             break;
@@ -172,13 +210,10 @@ if(isset($_SESSION['user']) && isset($_SESSION['role']) && $_SESSION['role'] == 
                             }
                             break;
                         case 'update_product':
-                            function get_current_image_paths($id_product){
-                                $current_image_paths = load_img_product($id_product);
-                                return $current_image_paths['img'];
-                            }
                             if (isset($_GET['id_product'])) {
                                 $id_product = $_GET['id_product'];
                                 $product = load_one_product($id_product);
+                                $listCT = loadAll_category();
                                 include("view/admin/product/update.php");
                             }else if($_SERVER['REQUEST_METHOD'] == "POST"){
                                 $id_product = $_POST['id_product'];
@@ -187,47 +222,73 @@ if(isset($_SESSION['user']) && isset($_SESSION['role']) && $_SESSION['role'] == 
                                 $price = $_POST['price'];
                                 $description = $_POST['description'];
                                 $images = $_FILES["img_product"];
-                                $uploaded_image_paths = array();
-                                if (!empty($images["name"])) {
-                                    // Người dùng đã tải lên ảnh mới
+
+                                if(empty($id_category)) addError('category','Please fill out this field');
+
+                                if(empty($name_pro)){
+                                    addError('name_pro','Please fill out this field');
+                                }
+
+                                if(empty($price)){
+                                    addError('price','Please fill out this field');
+                                }
+
+                                if($price <= 0 ){
+                                    addError('price','Price must be greater than 0 ');
+                                }
+                                if(!is_numeric($price)){
+                                    addError('price','Price must be the number');
+                                }
+
+                                if(empty($description)){
+                                    addError('description','Please fill out this field');
+                                }
+
+                                if(empty($images)){
+                                    addError('image','Please insert images product');
+                                }else{
+                                    $uploaded_image_paths = array();
                                     foreach ($images["name"] as $key => $image_name) {
                                         $tmp_name = $images["tmp_name"][$key];
-                                        $img_product = $img_path_product . basename($image_name);
+                                        $img_product = $img_path_product. basename($image_name);
 
                                         // Di chuyển tệp tin từ thư mục tạm thời đến thư mục lưu trữ
                                         move_uploaded_file($tmp_name, $img_product);
-
                                         $uploaded_image_paths[] = basename($image_name);
                                     }
-
-                                    // Chuyển mảng đường dẫn thành chuỗi, ngăn cách bởi dấu phẩy
                                     $image_paths_string = implode(",", $uploaded_image_paths);
-                                } else {
-                                    // Người dùng không tải lên ảnh mới, giữ nguyên giá trị hiện tại
-                                    $image_paths_string = implode(",",get_current_image_paths($id_product));
+                                    unset($uploaded_image_paths);
                                 }
-                                update_product($id_product,$name_pro,$description,$image_paths_string,$price,$id_category);
-                                echo("
+
+                                if(!isset($_SESSION['error'])){
+                                    update_product($id_product,$name_pro,$description,$image_paths_string,$price,$id_category);
+                                    $image_paths_string = '';
+                                    echo("
                                     <script>
                                         alert('Update product successfully');
                                         window.location.href = 'index.php?act=product'
                                     </script>
-                                ");
+                                    ");
+                                }else{
+                                    echo("<script>
+                                        alert('Add product failed')
+                                        window.location.href = 'index.php?act=product&action=add_product';
+                                    </script>");
+                                }
                             }
-
                             break;
-
-
                     }
                 }else{
                     if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                         if(isset($_POST['search']) && $_POST['search'] == 'search'){
                             $keyword = $_POST['keyword'];
                             $id_category = $_POST['id_category'];
+                            $listCT = loadAll_category();
                             $product = load_product_list($id_category,$keyword);
                             include ("view/admin/product/list.php");
                         }
                     }else {
+                        $listCT = loadAll_category();
                         $product = load_product_list(0, '');
                         include("view/admin/product/list.php");
                     }
@@ -250,32 +311,17 @@ if(isset($_SESSION['user']) && isset($_SESSION['role']) && $_SESSION['role'] == 
                     include ("view/admin/order/list.php");
                 }
                 break;
-            case "thongkedh":
-                $thongkedh = thongke_donhang();
-                include("donhang/thongke.php");
-                break;
-            case 'tinhtrang':
-                if (isset($_POST['gui'])) {
-                    $id = $_POST['id'];
-                    $tinhtrang = $_POST['tinhtrang'];
-                    capnhat($id, $tinhtrang);
-                }
-                include("donhang/donhang.php");
-                break;
             case 'logout':
                 logout();
                 echo "<script> window.location.href = 'index.php'</script>";
                 break;
-            default:
         }
     } else {
         include("view/admin/home.php");
     }
     include("view/admin/footer.php");
-
 }
 else{
-
     $listCT = loadAll_category();
     include "view/user/display/head.php";
     include "view/user/display/header.php";
@@ -298,17 +344,11 @@ else{
                 }
                 break;
             case "list-product":
-                if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-                    if(isset($_POST['search']) && $_POST['search'] == 'search'){
-                        $keyword = $_POST['keyword'];
-                        $id_category = $_POST['id_category'];
-                        $product = load_product_list($id_category,$keyword);
-                        include ("view/user/product/list.php");
-                    }
-                }else {
-                    $list_pro = load_product_list(0, '');
-                    include("view/user/product/list-product.php");
-                }
+                $id_category = $_GET['id_category'] ?? 0;
+                $keyword =  $_GET['keyword'] ?? '';
+                $list_pro = load_product_list($id_category, $keyword);
+                include("view/user/product/list-product.php");
+                break;
             case 'review':
                 if($_SERVER['REQUEST_METHOD'] == 'POST'){
                     $id_user = $_POST['id_user'];
@@ -321,47 +361,20 @@ else{
             case "detail":
                 include "view/user/account/account-detail.php";
                 break;
-            case "order":
-                if (isset($_SESSION['cart'])) {
-                    $cart = $_SESSION['cart'];
-                    // print_r($cart);
-                    if (isset($_POST['order_confirm'])) {
-                        $txthoten = $_POST['txthoten'];
-                        $txttel = $_POST['txttel'];
-                        $txtemail = $_POST['txtemail'];
-                        $txtaddress = $_POST['txtaddress'];
-                        $pttt = $_POST['pttt'];
-                        // date_default_timezone_set('Asia/Ho_Chi_Minh');
-                        // $currentDateTime = date('Y-m-d H:i:s');
-                        if (isset($_SESSION['user'])) {
-                            $id_user = $_SESSION['user']['id'];
-                        } else {
-                            $id_user = 0;
-                        }
-                        $idBill = addOrder($id_user, $txthoten, $txttel, $txtemail, $txtaddress, $_SESSION['resultTotal'], $pttt);
-                        foreach ($cart as $item) {
-                            addOrderDetail($idBill, $item['id'], $item['price'], $item['quantity'], $item['price'] * $item['quantity']);
-                        }
-                        unset($_SESSION['cart']);
-                        $_SESSION['success'] = $idBill;
-                        header("Location: index.php?act=success");
-                    }
-                    include "view/order.php";
-                } else {
-                    header("Location: index.php?act=listCart");
-                }
-                break;
             case 'add_to_cart' :
                 add_to_cart();
                 break;
+            case 'update_quantity_cart':
+                update_quantity_cart();
+                break;
+            case 'remove_from_cart':
+                removeFromCart();
+                break;
             case 'list-cart':
                 if(!empty($_SESSION['cart'])){
-                    $cart = $_SESSION['cart'];
-                    $idProduct = array_column($cart,'id');
-                    $idList = implode(',', $idProduct);
-                    $listCart = load_product_cart($idList);
-                    include "view/user/order/cart.php";
+                    $listCart = load_list_cart();
                 }
+                include "view/user/order/cart.php";
                 break;
             case 'pay' :
                 include "view/user/order/pay.php";
@@ -372,8 +385,7 @@ else{
                     $password = $_POST['singin-password'];
                     $user = login($email,$password);
                     if($user){
-                        $_SESSION['user'] = $user['name'];
-                        $_SESSION['role'] = $user['role'];
+                        $_SESSION['user'] = $user;
                         echo "<script> 
                                  alert('Login successfully')
                                  window.location.href = 'index.php' 
@@ -419,3 +431,4 @@ else{
     }
     include "view/user/display/footer.php";
 }
+ob_end_flush();

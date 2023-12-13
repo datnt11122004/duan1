@@ -65,7 +65,7 @@
 
                                 <div class="product product-7 text-center">
                                     <figure class="product-media">
-                                        <a href="index.php?act=product&id_pro="<?=$id_pro?>>
+                                        <a href="index.php?act=product&id_pro=<?=$id_pro?>">
                                             <img src="<?=$img_path_product.$aray_img[0]?>" alt="Product image" class="product-image">
                                         </a>
 

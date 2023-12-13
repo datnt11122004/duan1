@@ -1,7 +1,6 @@
 <?php
 extract($product);
 $img_pro = $img_path_product . $img;
-
 ?>
 <main class="main" style="width: 60%; margin: 0 auto;">
     <div class="mb">
@@ -37,12 +36,11 @@ $img_pro = $img_path_product . $img;
                     <label for="img_product" class="form-label">Image</label>
                     <input type="file" name="img_product[]" id="img_product" class="form-control" value="<?=$img?>" multiple>
                     <div class="row">
-                        <?php $array_img = explode(',', $img)?>
-                        <img class="col-md-3" src="<?=$img_path_product.$array_img[0]?>" width="100px" height="100px" alt="No file image">
-                        <img class="col-md-3" src="<?=$img_path_product.$array_img[1]?>" width="100px" height="100px" alt="No file image">
-                        <img class="col-md-3" src="<?=$img_path_product.$array_img[2]?>" width="100px" height="100px" alt="No file image">
-                        <img class="col-md-3" src="<?=$img_path_product.$array_img[3]?>" width="100px" height="100px" alt="No file image">
-
+                        <?php $array_img = explode(',', $img);
+                            foreach ($array_img as $value ){
+                                echo '<img class="col-md-3" src='.$img_path_product.$value.' width="100px" height="100px" alt="No file image">';
+                            }
+                        ?>
                     </div>
                 </div>
                 <div class="mb-3">

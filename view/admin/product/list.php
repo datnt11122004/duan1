@@ -44,7 +44,6 @@
                                         <th class="text-center col-md-2">Name product</th>
                                         <th class="text-center col-md-2">Image</th>
                                         <th class="text-center col-md-2">Price</th>
-                                        <th class="text-center col-md-2">Description</th>
                                         <th class="text-center col-md-2">Category</th>
                                         <th class="text-center col-md-1">Action</th>
                                     </tr>
@@ -69,9 +68,7 @@
                                                         </div>
                                                     </td>
                                                     <td class="text-center col-md-2">'.$price.'</td>
-                                                    <td class="text-center col-md-2" style="max-width: 100px; /* Độ rộng tối đa */white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-                                                        '.$description.'
-                                                    </td>
+                                                    
                                                     <td class="text-center col-md-2">'.$name_category.'</td>
                                                     <td class="text-center col-md-1">
                                                         <a href='.$update_product.' class="btn btn-primary btn-sm mb-2">Update</a>

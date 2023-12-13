@@ -16,7 +16,7 @@
                                     if(!isset($_SESSION['user'])) {
                                         echo '<li><a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>Login</a></li>';
                                     }else{
-                                        echo '<li><a href="index.php?act=detail">'.$_SESSION['user'].'</a></li>';
+                                        echo '<li><a href="index.php?act=detail">'.$_SESSION['user']['name'].'</a></li>';
                                     }
 
                                 ?>
@@ -51,23 +51,24 @@
                                     <div class="row no-gutters">
                                         <div class="col-md-6">
                                             <div class="menu-col">
-                                                <div class="menu-title">Product Details</div><!-- End .menu-title -->
+                                                <div class="menu-title">Category</div><!-- End .menu-title -->
                                                 <ul>
-                                                    <li><a href="../product.html">Default</a></li>
+                                                    <?php foreach ($listCT as $key => $value){?>
+                                                        <li><a href="index.php?act=list-product&id_category=<?=$value['id_category']?>"><?=$value['name_category']?></a></li>
+                                                    <?php }?>
                                                 </ul>
                                             </div><!-- End .menu-col -->
                                         </div><!-- End .col-md-6 -->
 
                                         <div class="col-md-6">
-                                            <div class="banner banner-overlay">
-                                                <a href="category.html" class="banner banner-menu">
-                                                    <img src="assets/images/menu/banner-1.jpg" alt="Banner">
-
-                                                    <div class="banner-content banner-content-top">
-                                                        <div class="banner-title text-white">Last <br>Chance<br><span><strong>Sale</strong></span></div><!-- End .banner-title -->
-                                                    </div><!-- End .banner-content -->
-                                                </a>
-                                            </div><!-- End .banner banner-overlay -->
+                                            <div class="menu-col">
+                                                <div class="menu-title">Product</div><!-- End .menu-title -->
+                                                <ul>
+                                                    <?php foreach ($listCT as $key => $value){?>
+                                                        <li><a href="index.php?act=list-product&id_category=<?=$value['id_category']?>"><?=$value['name_category']?></a></li>
+                                                    <?php }?>
+                                                </ul>
+                                            </div><!-- End .menu-col -->
                                         </div><!-- End .col-md-6 -->
                                     </div><!-- End .row -->
 

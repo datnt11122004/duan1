@@ -33,12 +33,18 @@ function add_to_cart(){
             // var_dump($_SESSION['cart']);die;
         }
         // return quantity cart
-        echo count($_SESSION['cart']);
+        return count($_SESSION['cart']);
     } else {
-        echo 'Your request is invalid';
+        return 'Your request is invalid';
     }
 }
-
+function load_list_cart(){
+    $cart = $_SESSION['cart'];
+    $idProduct = array_column($cart,'id');
+    $idList = implode(',', $idProduct);
+    $listCart = load_product_cart($idList);
+    return $listCart ;
+}
 function update_quantity_cart(){
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $productID = $_POST['id'];
@@ -50,11 +56,32 @@ function update_quantity_cart(){
 
         if($index !== false){
             $_SESSION['cart'][$index]['quantity'] = $newQuantity;
+            return load_list_cart();
         }else{
-            echo 'This product is not exist ';
+            return 'This product is not exist ';
         }
     }else{
-        echo 'Your request is invalid';
+        return 'Your request is invalid';
+    }
+}
+
+function removeFromCart(){
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        $productID = $_POST['id'];
+
+        if(!empty($_SESSION['cart'])){
+            $index = array_search($productID,array_column($_SESSION['cart'],'id'));
+        }
+
+        if($index !== false){
+            unset($_SESSION['cart'][$index]);
+            $_SESSION['cart'] = array_values($_SESSION['cart']);
+            return load_list_cart();
+        }else{
+            return 'This product is not exist ';
+        }
+    }else{
+        return 'Your request is invalid';
     }
 }
 ?>

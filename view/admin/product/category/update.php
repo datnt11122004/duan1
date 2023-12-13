@@ -21,6 +21,7 @@
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name category</label>
                                 <input type="text" class="form-control" name="name_category" id="name_category" value="<?=$name_category?>">
+                                <span style="color: red"><?= $_SESSION['error']['name_category'] ?? ''?></span>
                             </div>
 
                             <div class="mb-3">
@@ -40,3 +41,4 @@
         </div>
     </div>
 </main>
+<?php unset($_SESSION['error'])?>

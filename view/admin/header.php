@@ -11,11 +11,12 @@
                                     if(!isset($_SESSION['user'])) {
                                         echo '<li><a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>Login</a></li>';
                                     }else{
-                                        echo '<li><a href="index.php?act=detail">'.$_SESSION['user'].'</a></li>';
+                                        echo '<li><a href="index.php?act=detail">'.$_SESSION['user']['name'].'</a></li>
+                                                <li><a href="index.php?act=logout">log out</a></li>
+                                                ';
                                     }
 
                                 ?>
-                                <li><a href="index.php?act=logout">log out</a></li>
                             </ul>
                         </li>
                     </ul><!-- End .top-menu -->

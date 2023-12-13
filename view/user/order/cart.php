@@ -1,4 +1,4 @@
-<main class="main">
+<main class="main" id="main-cart">
     <div class="page-header text-center" style="background-image: url('../../../assets/images/page-header-bg.jpg')">
         <div class="container">
             <h1 class="page-title">Shopping Cart<span>Shop</span></h1>
@@ -7,8 +7,8 @@
     <nav aria-label="breadcrumb" class="breadcrumb-nav">
         <div class="container">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                <li class="breadcrumb-item"><a href="index.php?act=list-product">Shop</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Shopping Cart</li>
             </ol>
         </div><!-- End .container -->
@@ -18,9 +18,6 @@
         <div class="cart">
             <div class="container">
                 <?php
-//                    var_dump($_SESSION['cart']);var_dump($idList);
-//                 var_dump($listCart);
-
                     if(empty($listCart)){ ?>
                     <h2>No product in your cart</h2>
                 <?php
@@ -28,7 +25,7 @@
                 ?>
                 <div class="row">
                     <div class="col-lg-9">
-                        <table class="table table-cart table-mobile" id="order-table">
+                        <table class="table table-cart table-mobile" >
                             <thead>
                             <tr>
                                 <th>Product</th>
@@ -39,8 +36,11 @@
                             </tr>
                             </thead>
 
-                            <tbody>
-                            <?php foreach ($listCart as $key => $productID){
+                            <tbody id="order-table">
+                            <?php
+//                            var_dump($listCart);
+                            $sum_total = 0 ;
+                            foreach ($listCart as $key => $productID){
                                 $quantityProductCart = 0;
 //                                print_r($productID);
                                     foreach ($_SESSION['cart'] as $item) {
@@ -70,17 +70,18 @@
                                 <td class="price-col"><?=$productID['price']?></td>
                                 <td class="quantity-col">
                                     <div class="cart-product-quantity">
-                                        <input type="number" class="form-control" id="quantity-<?=$productID['id_pro']?>" min="1" max="<?=$productID['quantity']?>" step="1" data-decimals="1" value="<?=  (float)$quantityProductCart?>" oninput="updateQuantity(<?=$productID['id_pro']?>,<?=$key?>)">
+                                        <input type="number" class="form-control" id="quantity-<?=$productID['id_pro']?>" min="1" max="<?=$productID['quantity']?>" step="1" value="<?=$quantityProductCart?>" oninput="updateQuantity(<?=$productID['id_pro']?>,<?=$key?>)">
                                     </div><!-- End .cart-product-quantity -->
 
                                 </td>
-                                <td class="total-col">$<?= $productID['price'] * $quantityProductCart?></td>
-                                <td class="remove-col"><button class="btn-remove"><i class="icon-close"></i></button></td>
+                                <td class="total-col" id="price-<?=$productID['id_pro']?>">$<?= $productID['price'] * (int)$quantityProductCart?></td>
+                                <td class="remove-col"><button class="btn-remove" onclick="removeFromCart(<?=$productID['id_pro']?>)"><i class="icon-close"></i></button></td>
                             </tr>
-                            <?php $sum_total = 0 ;
+                            <?php
                                 $sum_total += $productID['price'] * $quantityProductCart ;
-                                $_SESSION['resultTotal'] = $sum_total;
-                            }?>
+                            }
+                            $_SESSION['resultTotal'] = $sum_total;
+                            ?>
                             </tbody>
                         </table><!-- End .table table-wishlist -->
 
@@ -93,7 +94,7 @@
                                 <tbody>
                                 <tr class="summary-subtotal">
                                     <td>Subtotal:</td>
-                                    <td>$<?=$sum_total?></td>
+                                    <td>$<?=$_SESSION['resultTotal']?></td>
                                 </tr><!-- End .summary-subtotal -->
                                 </tbody>
 
@@ -132,12 +133,31 @@ function updateQuantity(id,index){
             quantity: newQuantity
         },
         success: function (response){
-
+            location.href = "index.php?act=list-cart"
         },
         error: function (error){
             console.log(error)
         }
     })
+}
+
+function removeFromCart(id){
+    if( confirm('Remove this product from cart ?')){
+        $.ajax({
+            type: 'POST',
+            url: 'index.php?act=remove_from_cart',
+            data:{
+                id:id
+            },
+            success: function (response){
+                location.href = "index.php?act=list-cart"
+            },
+            error: function (error){
+                console.log(error)
+            }
+        })
+    }
+
 }
 </script>
 
