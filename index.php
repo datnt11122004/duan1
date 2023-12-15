@@ -1,14 +1,14 @@
 <?php
 session_start();
 ob_start();
-include ("model/pdo.php");
-include ("model/review.php");
-include ("model/cart.php");
-include ("model/product.php");
-include ("model/account.php");
-include ("model/wishlist.php");
-include ("model/category.php");
-include ("global.php");
+include("model/pdo.php");
+include("model/review.php");
+include("model/cart.php");
+include("model/product.php");
+include("model/account.php");
+include("model/wishlist.php");
+include("model/category.php");
+include("global.php");
 
 function addError($field, $message) {
     if (!isset($_SESSION['error'])) {
@@ -136,28 +136,17 @@ if( isset($_SESSION['user']) && $_SESSION['user']['role'] == 1 ){
                                 $price_pro = $_POST['price_pro'];
                                 $description = $_POST['description'];
                                 $images = $_FILES["img"];
-                                if(empty($id_category)){
-                                    addError('category','Please fill out this field');
-                                }
+                                if(empty($id_category)) addError('category','Please fill out this field');
 
-                                if(empty($name_pro)){
-                                    addError('name_pro','Please fill out this field');
-                                }
+                                if(empty($name_pro)) addError('name_pro','Please fill out this field');
 
-                                if(empty($price_pro)){
-                                    addError('price','Please fill out this field');
-                                }
+                                if(empty($price_pro)) addError('price','Please fill out this field');
 
-                                if($price_pro <= 0 ){
-                                    addError('price','Price must be greater than 0 ');
-                                }
-                                if(!is_numeric($price_pro)){
-                                    addError('price','Price must be the number');
-                                }
+                                if($price_pro <= 0 ) addError('price','Price must be greater than 0 ');
 
-                                if(empty($description)){
-                                    addError('description','Please fill out this field');
-                                }
+                                if(!is_numeric($price_pro)) addError('price','Price must be the number');
+
+                                if(empty($description)) addError('description','Please fill out this field');
 
                                 if(empty($images)){
                                     addError('image','Please insert images product');
@@ -225,9 +214,7 @@ if( isset($_SESSION['user']) && $_SESSION['user']['role'] == 1 ){
 
                                 if(empty($id_category)) addError('category','Please fill out this field');
 
-                                if(empty($name_pro)){
-                                    addError('name_pro','Please fill out this field');
-                                }
+                                if(empty($name_pro)) addError('name_pro','Please fill out this field');
 
                                 if(empty($price)){
                                     addError('price','Please fill out this field');
@@ -285,7 +272,7 @@ if( isset($_SESSION['user']) && $_SESSION['user']['role'] == 1 ){
                             $id_category = $_POST['id_category'];
                             $listCT = loadAll_category();
                             $product = load_product_list($id_category,$keyword);
-                            include ("view/admin/product/list.php");
+                            include("view/admin/product/list.php");
                         }
                     }else {
                         $listCT = loadAll_category();
@@ -308,7 +295,7 @@ if( isset($_SESSION['user']) && $_SESSION['user']['role'] == 1 ){
 
                     }
                 }else{
-                    include ("view/admin/order/list.php");
+                    include("view/admin/order/list.php");
                 }
                 break;
             case 'logout':
@@ -377,7 +364,22 @@ else{
                 include "view/user/order/cart.php";
                 break;
             case 'pay' :
+                if(!empty($_SESSION['cart'])){
+                    $listCart = load_list_cart();
+                }
                 include "view/user/order/pay.php";
+                break;
+            case 'checkout':
+                if($_SERVER['REQUEST_METHOD']){
+
+                    if(isset($_SESSION['error'])){
+
+                        unset($_SESSION['cart']);
+                        unset($_SESSION['resultTotal']);
+                        include 'view/user/order/checkout.php';
+                    }
+                }
+                include 'view/user/order/checkout.php';
                 break;
             case "login":
                 if($_SERVER['REQUEST_METHOD'] == "POST"){
