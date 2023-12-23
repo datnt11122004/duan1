@@ -9,9 +9,8 @@
     <nav aria-label="breadcrumb" class="breadcrumb-nav">
         <div class="container">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.php?act=giohang">
-                        Giỏ hàng </a></li>
-                <li class="breadcrumb-item active" aria-current="page">Thanh toán</li>
+                <li class="breadcrumb-item"><a href="index.php?act=list-cart">List cart </a></li>
+                <li class="breadcrumb-item active" aria-current="page">Payment</li>
             </ol>
         </div><!-- End .container -->
     </nav><!-- End .breadcrumb-nav -->
@@ -21,43 +20,38 @@
             <div class="container">
                 <div class="checkout-discount">
                     <input type="text" class="form-control" required id="checkout-discount-input">
-                    <label for="checkout-discount-input" class="text-truncate">
-                        Có mã giảm giá không?<span>nhập mã giảm giá</span></label>
+                    <label for="checkout-discount-input" class="text-truncate">Do you have a discount code?<span>Enter discount code</span></label>
                 </div><!-- End .checkout-discount -->
                 <form action="index.php?act=checkout" method="post">
                     <div class="row">
                         <div class="col-lg-4">
                             <h2 class="checkout-title">
-                                Chi tiết thanh toán
+                                Payment details
                             </h2><!-- End .checkout-title -->
-                            <?php extract($_SESSION['user']); ?>
+                            <?php var_dump($_SESSION['cart']);
+                            extract($_SESSION['user']); ?>
                                 <div class="form-group">
-                                    <label for="name">Họ và tên</label>
+                                    <label for="name">Name</label>
                                     <input type="text" class="form-control" value="<?= $name ?>" name="name">
                                     <span class="error-message"><?= $_SESSION['error']['name'] ?? '' ?></span>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="address">Địa chỉ</label>
+                                    <label for="address">Address</label>
                                     <input type="text" class="form-control" value="<?= $address ?>" name="address">
                                     <span class="error-message"><?= $_SESSION['error']['address'] ?? '' ?></span>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="email" class="form-control" value="<?= $email ?>" name="email">
-                                    <span class="error-message"><?= $_SESSION['error']['email'] ?? '' ?></span>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="sdt">Số điện thoại</label>
+                                    <label for="tel">Phone</label>
                                     <input type="text" class="form-control" value="<?= $tel ?>" name="tel">
                                     <span class="error-message"><?= $_SESSION['error']['tel'] ?? '' ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="ghichu">Ghi chú</label>
-                                    <textarea name="ghichu" class="form-control" cols="30" rows="4" placeholder="Ghi chú về đơn đặt hàng của bạn, ví dụ: lưu ý đặc biệt khi giao hàng"></textarea>
+                                    <label for="note">Note</label>
+                                    <textarea name="note" class="form-control" cols="30" rows="4" placeholder="Notes about your order"></textarea>
                                 </div>
+
                         </div><!-- End .col-lg-4 -->
                         <aside class="col-lg-8">
                             <div class="summary">
@@ -66,10 +60,10 @@
                                 <table class="table table-summary">
                                     <thead>
                                     <tr>
-                                        <th class="">Sản phẩm</th>
-                                        <th class="">Số lượng</th>
-                                        <th class="">Giá</th>
-                                        <th class="">Tổng giá tiền sản phẩm</th>
+                                        <th class="">Product</th>
+                                        <th class="">Price</th>
+                                        <th class="">Quantity</th>
+                                        <th class="">Total product price</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -94,10 +88,10 @@
                                     </tr>
                                     <?php }?>
                                     <tr class="summary-subtotal">
-                                        <td>Tổng cộng:</td>
+                                        <td>Total:</td>
                                         <td></td>
                                         <td></td>
-                                        <td id="tong_tien"><?php echo $_SESSION['resultTotal']?> $</td>
+                                        <td id="resultTotal"> $<?php echo $_SESSION['resultTotal']?></td>
                                     </tr><!-- End .summary-subtotal -->
                                     </tbody>
                                 </table><!-- End .table table-summary -->
@@ -105,18 +99,15 @@
                                 <div class="accordion-summary" id="accordion-payment">
                                     <div class="card">
                                         <div class="custom-control custom-radio">
-                                            <input type="radio" name="redirect" class="custom-control-input" value="vnpay" id="nhanh" >
-                                            <label class="custom-control-label" for="nhanh">
-                                                VnPay</label>
-                                        </div><!-- End .custom-control -->
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" name="redirect" class="custom-control-input" value="Thanh toán khi nhận hàng" id="cham">
-                                            <label class="custom-control-label" for="cham">
-                                                Thanh toán khi nhận hàng </label>
+                                            <input type="radio" name="redirect" class="custom-control-input" value="delivery" id="delivery">
+                                            <label class="custom-control-label" for="delivery">Payment on delivery </label>
                                         </div><!-- End .custom-control -->
                                     </div><!-- End .card -->
-                                    <input name="dathang" type="submit" class="btn btn-outline-primary-2 btn-order btn-block" value="Đặt hàng">
+
+                                    <input name="order" type="submit" class="btn btn-outline-primary-2 btn-order btn-block" value="Order">
+
                                 </div> <!-- End .accordion-summary-->
+
                             </div><!-- End .summary -->
                         </aside><!-- End .col-lg-8 -->
                     </div><!-- End .row -->

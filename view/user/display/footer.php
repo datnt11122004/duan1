@@ -137,23 +137,25 @@
                     <div class="form-tab">
                         <ul class="nav nav-pills nav-fill" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin" role="tab" aria-controls="signin" aria-selected="true">Sign In</a>
+                                <a class="nav-link active" id="signin-tab-2" data-toggle="tab" href="#signin-2" role="tab" aria-controls="signin-2" aria-selected="false">Sign In</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">Register</a>
+                                <a class="nav-link" id="register-tab-2" data-toggle="tab" href="#register-2" role="tab" aria-controls="register-2" aria-selected="true">Register</a>
                             </li>
                         </ul>
                         <div class="tab-content" id="tab-content-5">
-                            <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
-                                <form action="index.php?act=login" method="post">
+                            <div class="tab-pane fade show active" id="signin-2" role="tabpanel" aria-labelledby="signin-tab-2">
+                                <form action="index.php?act=login" role="form" method="post">
                                     <div class="form-group">
-                                        <label for="singin-email">Email address</label>
-                                        <input type="email" class="form-control" id="singin-email" name="singin-email" required>
+                                        <label for="signin-email">Email</label>
+                                        <input type="text" class="form-control" id="signin-email-2" name="signin-email">
+                                        <span class="error-message"><?=$_SESSION['error']['signin-email'] ?? ''?></span>
                                     </div><!-- End .form-group -->
 
                                     <div class="form-group">
-                                        <label for="singin-password">Password</label>
-                                        <input type="password" class="form-control" id="singin-password" name="singin-password" required>
+                                        <label for="signin-password">Password *</label>
+                                        <input type="password" class="form-control" id="signin-password-2" name="signin-password">
+                                        <span class="error-message"><?=$_SESSION['error']['signin-password'] ?? ''?></span>
                                     </div><!-- End .form-group -->
 
                                     <div class="form-footer">
@@ -163,11 +165,13 @@
                                         </button>
 
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="signin-remember">
-                                            <label class="custom-control-label" for="signin-remember">Remember Me</label>
+                                            <input type="checkbox" class="custom-control-input" id="signin-remember-2">
+                                            <label class="custom-control-label" for="signin-remember-2">Remember Me</label>
                                         </div><!-- End .custom-checkbox -->
 
-                                        <a class="forgot-link" id="forgot-password-tab" data-toggle="tab" href="#forgot-password" role="tab" aria-controls="forgot-password" aria-selected="false">Forgotpassword</a>
+                                        <a class="nav-link forgot-link" id="forgotpassword-tab-2" data-toggle="tab" href="#forgotpassword-2" role="tab" aria-controls="forgotpassword-2" aria-selected="false">Forgot password</a>
+
+
                                     </div><!-- End .form-footer -->
                                 </form>
                                 <div class="form-choice">
@@ -188,31 +192,36 @@
                                     </div><!-- End .row -->
                                 </div><!-- End .form-choice -->
                             </div><!-- .End .tab-pane -->
-                            <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
-                                <form action="index.php?act=signup">
+                            <div class="tab-pane fade" id="register-2" role="tabpanel" aria-labelledby="register-tab-2">
+                                <form action="index.php?act=signup" role="form" method="post">
                                     <div class="form-group">
                                         <label for="register-email">Your email address *</label>
-                                        <input type="email" class="form-control" id="register-email" name="register-email" required>
+                                        <input type="email" class="form-control" id="register-email" name="register-email">
+                                        <span class="error-message"><?=$_SESSION['error']['register-email'] ?? ''?></span>
                                     </div><!-- End .form-group -->
 
                                     <div class="form-group">
                                         <label for="register-user-name">User name</label>
-                                        <input type="text" class="form-control" id="register-user-name" name="register-user-name" required>
+                                        <input type="text" class="form-control" id="register-user-name" name="register-user-name">
+                                        <span class="error-message"><?=$_SESSION['error']['register-user-name'] ?? ''?></span>
                                     </div><!-- End .form-group -->
 
                                     <div class="form-group">
                                         <label for="register-password">Password</label>
-                                        <input type="password" class="form-control" id="register-password" name="register-password" required>
+                                        <input type="password" class="form-control" id="register-password" name="register-password">
+                                        <span class="error-message"><?=$_SESSION['error']['register-password'] ?? ''?></span>
                                     </div><!-- End .form-group -->
 
                                     <div class="form-group">
                                         <label for="register-tel">Telephone</label>
-                                        <input type="text" class="form-control" id="register-tel" name="register-tel" required>
+                                        <input type="text" class="form-control" id="register-tel" name="register-tel">
+                                        <span class="error-message"><?=$_SESSION['error']['register-tel'] ?? ''?></span>
                                     </div><!-- End .form-group -->
 
                                     <div class="form-group">
                                         <label for="register-address">Address</label>
-                                        <textarea  class="form-control" id="register-address" name="register-address" required></textarea>
+                                        <textarea  class="form-control" id="register-address" name="register-address"></textarea>
+                                        <span class="error-message"><?=$_SESSION['error']['register-address'] ?? ''?></span>
                                     </div><!-- End .form-group -->
 
                                     <div class="form-footer">

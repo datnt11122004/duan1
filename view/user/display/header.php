@@ -90,7 +90,7 @@
                 <div class="header-right">
                     <div class="header-search">
                         <a href="#" class="search-toggle" role="button" title="Search"><i class="icon-search"></i></a>
-                        <form action="index.php?act=list-product" method="get">
+                        <form action="index.php?act=list-product" method="post">
                             <div class="header-search-wrapper">
                                 <label for="keyword" class="sr-only">Search</label>
                                 <input type="text" class="form-control" name="keyword" id="keyword" placeholder="Search in..." required>
@@ -99,67 +99,10 @@
                     </div><!-- End .header-search -->
 
                     <div class="dropdown cart-dropdown">
-                        <a href="" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                        <a href="index.php?act=list-cart" class="dropdown-toggle"  data-display="static">
                             <i class="icon-shopping-cart"></i>
                             <span class="cart-count" id="totalCart"><?= !empty($_SESSION['cart']) ? count($_SESSION['cart']) : 0 ?></span>
                         </a>
-                        <?php
-                            if(!empty($_SESSION['cart'])) {
-                                echo '
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <div class="dropdown-cart-products">
-                                            <div class="product">
-                                                <div class="product-cart-details">
-                                                    <h4 class="product-title">
-                                                        <a href="../product.html">Beige knitted elastic runner shoes</a>
-                                                    </h4>
-            
-                                                    <span class="cart-product-info">
-                                                            <span class="cart-product-qty">1</span>
-                                                            x $84.00
-                                                        </span>
-                                                </div><!-- End .product-cart-details -->
-            
-                                                <figure class="product-image-container">
-                                                    <a href="../product.html" class="product-image">
-                                                        <img src="assets/images/products/cart/product-1.jpg" alt="product">
-                                                    </a>
-                                                </figure>
-                                                <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                            </div><!-- End .product -->
-            
-                                            <div class="product">
-                                                <div class="product-cart-details">
-                                                    <h4 class="product-title">
-                                                        <a href="../product.html">Blue utility pinafore denim dress</a>
-                                                    </h4>
-            
-                                                    <span class="cart-product-info">
-                                                            <span class="cart-product-qty">1</span>
-                                                            x $76.00
-                                                        </span>
-                                                </div><!-- End .product-cart-details -->
-            
-                                                <figure class="product-image-container">
-                                                    <a href="../product.html" class="product-image">
-                                                        <img src="assets/images/products/cart/product-2.jpg" alt="product">
-                                                    </a>
-                                                </figure>
-                                                <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                            </div><!-- End .product -->
-                                        </div><!-- End .cart-product -->
-            
-                                        <div class="dropdown-cart-total">
-                                            <span>Total</span>
-                                            <span class="cart-total-price">$160.00</span>
-                                        </div><!-- End .dropdown-cart-total -->
-            
-                                        <div class="dropdown-cart-action">
-                                            <a href="?act=list-cart" class="btn btn-primary">View Cart</a>
-                                        </div><!-- End .dropdown-cart-total -->
-                                    </div><!-- End .dropdown-menu -->';
-                            }
-                        ?>
                     </div><!-- End .cart-dropdown -->
                 </div><!-- End .header-right -->
             </div><!-- End .container -->

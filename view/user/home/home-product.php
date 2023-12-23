@@ -44,11 +44,17 @@
                                     }
                                 }
                             }'>
+                <?php
+                $product = load_product_list(0,'');
+                foreach ($product as $value){
+                    extract($value);
+                    $array_img = explode(',',$img);
+                ?>
                 <div class="product product-11 text-center">
                     <figure class="product-media">
                         <a href="../product.html">
-                            <img src="assets/images/demos/demo-2/products/product-1-1.jpg" alt="Product image" class="product-image">
-                            <img src="assets/images/demos/demo-2/products/product-1-2.jpg" alt="Product image" class="product-image-hover">
+                            <img src="<?=$img_path_product.$array_img[0]?>" alt="Product image" class="product-image">
+                            <img src="<?=$img_path_product.$array_img[1]?>" alt="Product image" class="product-image-hover">
                         </a>
 
                         <div class="product-action-vertical">
@@ -57,7 +63,7 @@
                     </figure><!-- End .product-media -->
 
                     <div class="product-body">
-                        <h3 class="product-title"><a href="../product.html">Butler Stool Ladder</a></h3><!-- End .product-title -->
+                        <h3 class="product-title"><a href="index.php?act=product&id_pro=<?=$id_pro?>"><?=$name_pro?></a></h3><!-- End .product-title -->
                         <div class="product-price">
                             $251,00
                         </div><!-- End .product-price -->
@@ -66,10 +72,13 @@
                         <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
                     </div><!-- End .product-action -->
                 </div><!-- End .product -->
+                <?php }?>
             </div><!-- End .owl-carousel -->
         </div><!-- .End .tab-pane -->
         <?php foreach ($listCT as $category){
         extract($category);
+        $categoryID = $id_category;
+        $product_by_category = load_product_list($categoryID,'');
         ?>
         <div class="tab-pane p-0 fade" id="trendy-<?=$name_category?>-tab" role="tabpanel" aria-labelledby="trendy-<?=$name_category?>-link">
             <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl"
@@ -98,11 +107,15 @@
                                     }
                                 }
                             }'>
+                <?php foreach ($product_by_category as $value ){
+                    extract($value);
+                    $array_img = explode(',', $img);
+                ?>
                 <div class="product product-11 text-center">
                     <figure class="product-media">
-                        <a href="../product.html">
-                            <img src="assets/images/demos/demo-2/products/product-1-1.jpg" alt="Product image" class="product-image">
-                            <img src="assets/images/demos/demo-2/products/product-1-2.jpg" alt="Product image" class="product-image-hover">
+                        <a href="index.php?act=product&id_pro=<?=$id_pro?>">
+                            <img src="<?=$img_path_product.$array_img[0]?>" alt="Product image" class="product-image">
+                            <img src="<?=$img_path_product.$array_img[1]?>" alt="Product image" class="product-image-hover">
                         </a>
 
                         <div class="product-action-vertical">
@@ -111,15 +124,16 @@
                     </figure><!-- End .product-media -->
 
                     <div class="product-body">
-                        <h3 class="product-title"><a href="../product.html">Butler Stool Ladder</a></h3><!-- End .product-title -->
+                        <h3 class="product-title"><a href="index.php?act=product&id_pro=<?=$id_pro?>">Butler Stool Ladder</a></h3><!-- End .product-title -->
                         <div class="product-price">
-                            $251,00
+                            $<?=$price?>
                         </div><!-- End .product-price -->
                     </div><!-- End .product-body -->
                     <div class="product-action">
                         <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
                     </div><!-- End .product-action -->
                 </div><!-- End .product -->
+                <?php }?>
             </div><!-- End .owl-carousel -->
         </div><!-- .End .tab-pane -->
         <?php }?>

@@ -44,3 +44,22 @@ function delete_product($id_pro){
             where p.id_pro = '$id_pro' ";
     pdo_execute($sql);
 }
+
+function load_8product_list () {
+    $sql = "SELECT * FROM product p 
+            join categories ct on p.id_category = ct.id_category 
+                where status = 0
+            limit 8
+            ";
+    return pdo_query($sql);
+}
+
+function update_view($id_pro){
+    $sql = "UPDATE product SET view = view + 1 where id_pro = '$id_pro' ";
+    pdo_execute($sql);
+}
+
+function update_purchases($id_pro){
+    $sql = "UPDATE product SET purchases = purchases + 1, quantity = quantity - 1 where id_pro = '$id_pro'";
+    pdo_execute($sql);
+}

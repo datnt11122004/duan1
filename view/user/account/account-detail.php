@@ -1,5 +1,5 @@
 <main class="main">
-<div class="page-header text-center" style="background-image: url('../../../assets/images/page-header-bg.jpg')">
+<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
     <div class="container">
         <h1 class="page-title">My Account<span>Shop</span></h1>
     </div><!-- End .container -->
@@ -44,39 +44,52 @@
 
                         <div class="tab-pane fade" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
                             <p>No order has been made yet.</p>
-                            <a href="category.html" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
+                            <a href="index.php?act=list-product" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
                         </div><!-- .End .tab-pane -->
 
 
                         <div class="tab-pane fade" id="tab-account" role="tabpanel" aria-labelledby="tab-account-link">
-                            <form action="#">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <label>First Name *</label>
-                                        <input type="text" class="form-control" required>
-                                    </div><!-- End .col-sm-6 -->
-
-                                    <div class="col-sm-6">
-                                        <label>Last Name *</label>
-                                        <input type="text" class="form-control" required>
-                                    </div><!-- End .col-sm-6 -->
+                            <form action="index.php?act=update-detail" method="post" role="form">
+                                <div class="form-group">
+                                    <label for="name">Name *</label>
+                                    <input type="text" name="name" class="form-control" value="<?=$_SESSION['user']['name']?>">
+                                    <span class="error-message"><?=$_SESSION['error']['name'] ?? ''?></span>
                                 </div><!-- End .row -->
 
-                                <label>Display Name *</label>
-                                <input type="text" class="form-control" required>
-                                <small class="form-text">This will be how your name will be displayed in the account section and in reviews</small>
+                                <div class="form-group">
+                                    <label for="phone">Phone *</label>
+                                    <input type="text" name="phone" class="form-control" value="<?=$_SESSION['user']['tel']?>">
+                                    <span class="error-message"><?=$_SESSION['error']['tel'] ?? ''?></span>
+                                </div>
 
-                                <label>Email address *</label>
-                                <input type="email" class="form-control" required>
+                                <div class="form-group">
+                                    <label>Email address *</label>
+                                    <input type="email" class="form-control" value="<?=$_SESSION['user']['email']?>">
+                                    <span class="error-message"><?=$_SESSION['error']['email'] ?? ''?></span>
+                                </div>
 
-                                <label>Current password (leave blank to leave unchanged)</label>
-                                <input type="password" class="form-control">
+                                <div class="form-group">
+                                    <label>Address *</label>
+                                    <textarea class="form-control" name="address"><?=$_SESSION['user']['address']?></textarea>
+                                    <span class="error-message"><?=$_SESSION['error']['address'] ?? ''?></span>
+                                </div>
 
-                                <label>New password (leave blank to leave unchanged)</label>
-                                <input type="password" class="form-control">
+                                <div class="form-group password-toggle">
+                                    <label for="currentPassword">Current password (leave blank to leave unchanged)</label>
+                                    <input type="password" id="currentPassword" name="current-password" class="form-control" value="<?=$_SESSION['user']['pass']?>">
+                                </div>
 
-                                <label>Confirm new password</label>
-                                <input type="password" class="form-control mb-2">
+                                <div class="form-group password-toggle">
+                                    <label>New password (leave blank to leave unchanged)</label>
+                                    <input type="password" id="newPassword" name="new-password" class="form-control">
+                                    <span class="error-message" id="errorMessageNewPassword"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Confirm new password</label>
+                                    <input type="password" id="confirmNewPassword" class="form-control mb-2">
+                                    <span class="error-message" id="errorMessageConfirmNewPassword"></span>
+                                </div>
 
                                 <button type="submit" class="btn btn-outline-primary-2">
                                     <span>SAVE CHANGES</span>
@@ -91,3 +104,44 @@
     </div><!-- End .dashboard -->
 </div><!-- End .page-content -->
 </main>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var newPasswordInput = document.getElementById('newPassword');
+        var confirmNewPasswordInput = document.getElementById('confirmNewPassword');
+        var errorMessageNewPassword = document.getElementById('errorMessageNewPassword');
+        var errorMessageConfirmNewPassword = document.getElementById('errorMessageConfirmNewPassword');
+        var submitForm = document.getElementById('account-detail-form');
+        function validatePassword() {
+            // Reset error message
+            errorMessageNewPassword.innerHTML = '';
+            errorMessageConfirmNewPassword.innerHTML = '';
+
+            var newPassword = newPasswordInput.value;
+            var confirmNewPassword = confirmNewPasswordInput.value;
+
+            if (newPassword.trim() !== '') {
+                if (newPassword.length < 8) {
+                    errorMessageNewPassword.innerHTML = 'The new password must have at least 8 characters.';
+                    return false;
+                }
+
+                if (newPassword !== confirmNewPassword) {
+                    errorMessageConfirmNewPassword.innerHTML = 'New password and confirm password do not match.';
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        newPasswordInput.addEventListener('input', validatePassword);
+        confirmNewPasswordInput.addEventListener('input', validatePassword);
+
+        submitForm.addEventListener('submit', function (event) {
+            if (!validatePassword()) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>

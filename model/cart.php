@@ -84,4 +84,11 @@ function removeFromCart(){
         return 'Your request is invalid';
     }
 }
+
+function insert_order($id_user,$id_pro,$quantity,$address,$tel,$note,$date){
+    $sql = "INSERT INTO cart 
+    ( `id_user`, `id_pro`, `quanity`, `shipping_address`, `shipping_tel`, `note`, `date`) 
+    VALUES ('$id_user','$id_pro','$quantity','$address','$tel','$note','$date')";
+    pdo_execute($sql);
+}
 ?>
