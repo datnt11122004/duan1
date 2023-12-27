@@ -249,11 +249,16 @@
                                 }
                             }
                         }'>
+            <?php
+                foreach($productLikeCategory as $value){
+                    extract($value);
+                    $array_img = explode(',',$img);
+            ?>
             <div class="product product-7 text-center">
                 <figure class="product-media">
                     <span class="product-label label-new">New</span>
                     <a href="product.html">
-                        <img src="assets/images/products/product-4.jpg" alt="Product image" class="product-image">
+                        <img src="<?=$img_path_product.$array_img['0']?>" alt="Product image" class="product-image">
                     </a>
 
                     <div class="product-action-vertical">
@@ -263,17 +268,14 @@
                     </div><!-- End .product-action-vertical -->
 
                     <div class="product-action">
-                        <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                        <button href="#" data-id="<?=$id_pro?>" class="btn-product btn-cart" onclick="add_to_cart(<?=$id_pro?>,'<?=$name_pro?>',<?=$price?>)"><span>add to cart</span></button>
                     </div><!-- End .product-action -->
                 </figure><!-- End .product-media -->
 
                 <div class="product-body">
-                    <div class="product-cat">
-                        <a href="#">Women</a>
-                    </div><!-- End .product-cat -->
-                    <h3 class="product-title"><a href="product.html">Brown paperbag waist <br>pencil skirt</a></h3><!-- End .product-title -->
+                    <h3 class="product-title"><a href="index.php?act=product&id_pro=<?=$id_pro?>"><?=$name_pro?></a></h3><!-- End .product-title -->
                     <div class="product-price">
-                        $60.00
+                        $<?=$price?>
                     </div><!-- End .product-price -->
                     <div class="ratings-container">
                         <div class="ratings">
@@ -284,53 +286,24 @@
 
                     <div class="product-nav product-nav-thumbs">
                         <a href="#" class="active">
-                            <img src="assets/images/products/product-4-thumb.jpg" alt="product desc">
+                            <img src="<?=$img_path_product . $array_img[1]?>" alt="product desc">
                         </a>
                         <a href="#">
-                            <img src="assets/images/products/product-4-2-thumb.jpg" alt="product desc">
+                            <img src="<?=$img_path_product . $array_img[2]?>" alt="product desc">
                         </a>
 
                         <a href="#">
-                            <img src="assets/images/products/product-4-3-thumb.jpg" alt="product desc">
+                            <img src="<?=$img_path_product . $array_img[3]?>" alt="product desc">
                         </a>
                     </div><!-- End .product-nav -->
                 </div><!-- End .product-body -->
             </div><!-- End .product -->
-
-
+            <?php }?>
         </div><!-- End .owl-carousel -->
     </div><!-- End .container -->
 </div><!-- End .page-content -->
 </main><!-- End .main -->
-<!-- Sticky Bar -->
-<div class="sticky-bar">
-    <div class="container">
-        <div class="row">
-            <div class="col-6">
-                <figure class="product-media">
-                    <a href="product.html">
-                        <img src="assets/images/products/sticky/product-1.jpg" alt="Product image">
-                    </a>
-                </figure><!-- End .product-media -->
-                <h4 class="product-title"><a href="product.html">Dark yellow lace cut out swing dress</a></h4><!-- End .product-title -->
-            </div><!-- End .col-6 -->
 
-            <div class="col-6 justify-content-end">
-                <div class="product-price">
-                    $84.00
-                </div><!-- End .product-price -->
-                <div class="product-details-quantity">
-                    <input type="number" id="sticky-cart-qty" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required>
-                </div><!-- End .product-details-quantity -->
-
-                <div class="product-details-action">
-                    <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
-                    <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
-                </div><!-- End .product-details-action -->
-            </div><!-- End .col-6 -->
-        </div><!-- End .row -->
-    </div><!-- End .container -->
-</div><!-- End .sticky-bar -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {

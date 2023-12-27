@@ -20,7 +20,7 @@
                         <?php foreach ($account as $value) : ?>
                             <?php
                             extract($value);
-                            $update_account = "index.php?act=account&action=update_account&id_account=".$id_user."";
+                            $update_account = "index.php?act=account&action=update-account&id_account=".$id_user."";
                             ?>
                             <tr>
                                 <td class="col-md-1 text-center"><?=$name?></td>

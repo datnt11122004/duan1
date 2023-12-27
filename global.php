@@ -16,3 +16,10 @@ function isValidPhoneNumber($phoneNumber){
 function isValidEmail($email){
     return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
 }
+function checkPaymentMethod($paymentMethod){
+    if($paymentMethod == 0 ){
+        return 'Online payments';
+    }else{
+        return 'Payment on delivery';
+    }
+}

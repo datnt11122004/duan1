@@ -55,10 +55,6 @@ if( isset($_SESSION['user']) && $_SESSION['user']['role'] == 2 ){
                                 include "view/admin/product/category/add.php";
                             }
                             break;
-                        case 'thongkedm':
-                            $listtk = thongke();
-                            include "danhmuc/thongkedm.php";
-                            break;
                         case 'delete_category':
                             if (isset($_GET['id_category'])) {
                                 delete_category($_GET['id_category']);
@@ -177,10 +173,6 @@ if( isset($_SESSION['user']) && $_SESSION['user']['role'] == 2 ){
                                 include "view/admin/product/add.php";
                             }
                             break;
-                        case 'thongkedm':
-                            $listtk = thongke();
-                            include "danhmuc/thongkedm.php";
-                            break;
                         case 'delete_product':
                             if (isset($_GET['id_product'])) {
                                 delete_product($_GET['id_product']);
@@ -280,10 +272,27 @@ if( isset($_SESSION['user']) && $_SESSION['user']['role'] == 2 ){
                 if(isset($_GET['action'])){
                     $action = $_GET['action'];
                     switch ($action){
-                        case 'update_account':
-                            $id_account = $_GET['id_account'];
-                            $account = account();
-                            include("view/admin/account/update.php");
+                        case 'update-account':
+                            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                                $idAccount = $_POST['id-account'];
+                                $nameUser = $_POST['name-user'];
+                                $password = $_POST['password'];
+                                $role = $_POST['role'];
+                                $phone = $_POST['phone'];
+                                $email = $_POST['email'];
+                                $address = $_POST['address'];
+                                update_account($nameUser, $password, $role, $phone, $email, $address, $idAccount);
+                                echo '<script>
+                                        alert("Account updated successfully")
+                                        window.location.href = "index.php?act=account"
+                                    </script>
+                                ';
+                            }else {
+                                $id_account = $_GET['id_account'];
+                                $listRole = list_role();
+                                $account = account($id_account);
+                                include("view/admin/account/update.php");
+                            }
                             break;
 
                     }
@@ -296,12 +305,41 @@ if( isset($_SESSION['user']) && $_SESSION['user']['role'] == 2 ){
                 if(isset($_GET['action'])){
                     $action = $_GET['action'];
                     switch ($action){
-                        case 'update_order':
-
+                        case 'update-order':
+                            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                                $paymentStatus = $_POST['payment-status'];
+                                $statusOrder = $_POST['status-order'];
+                                $id_oder = $_POST['id-order'];
+                                update_status_order($paymentStatus,$statusOrder,$id_oder);
+                                echo '
+                                    <script>
+                                        alert("Update status order completed")
+                                        window.location.href = "index.php?act=order"
+                                    </script>
+                                ';
+                            }else{
+                                if(isset($_GET['id-order'])){
+                                    $idOder = $_GET['id-order'];
+                                    $orderDetails = orderDetails($idOder);
+                                    $listStatusOrder = list_status_order();
+                                    include 'view/admin/order/details.php';
+                                }
+                            }
+                            break;
+                        case 'cancel-order' :
+                            $idOder = $_GET['id-order'];
+                            update_status_order(1,6,$idOder);
+                            echo '
+                                <script>
+                                    alert("Cancel order completed")
+                                    window.location.href = "index.php?act=order"
+                                </script>
+                            ';
                             break;
 
                     }
                 }else{
+                    $listOrder = listOderAdmin();
                     include("view/admin/order/list.php");
                 }
                 break;
@@ -334,6 +372,7 @@ else{
                     $id_pro = $_GET['id_pro'];
                     $product = load_one_product($id_pro);
                     $comment = load_all_reviews($id_pro);
+                    $productLikeCategory = load_product_list($product['id_category'],'');
                     update_view($id_pro);
                     include "view/user/product/product.php";
                 }
@@ -354,6 +393,7 @@ else{
                 }
                 break;
             case "detail":
+                $listOrder = listOrder($_SESSION['user']['id_user']);
                 include "view/user/account/account-detail.php";
                 break;
             case 'update-detail':
@@ -393,7 +433,6 @@ else{
 
                 }
                 break;
-
 //                Cart
             case 'add_to_cart' :
                 add_to_cart();
@@ -454,6 +493,27 @@ else{
                                  window.location.href = 'index.php?act=pay' 
                               </script>";
                     }
+                }
+                break;
+            case 'cancel-order':
+                if (isset($_GET['id-order'])){
+                    $idOrder = $_GET['id-order'];
+                    update_status_order(1,6,$idOrder);
+                    echo '<script> window.location.href = "index.php?act=detail" </script>';
+                }
+                break;
+            case 'return-order':
+                if (isset($_GET['id-order'])){
+                    $idOrder = $_GET['id-order'];
+                    update_status_order(1,7,$idOrder);
+                    echo '<script> window.location.href = "index.php?act=detail" </script>';
+                }
+                break;
+            case 'confirm-order':
+                if (isset($_GET['id-order'])){
+                    $idOrder = $_GET['id-order'];
+                    update_status_order(0,8,$idOrder);
+                    echo '<script> window.location.href = "index.php?act=detail" </script>';
                 }
                 break;
 //                Login/logout/Sign up

@@ -20,10 +20,10 @@
                 <aside class="col-md-4 col-lg-3">
                     <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard" role="tab" aria-controls="tab-dashboard" aria-selected="true">Dashboard</a>
+                            <a class="nav-link" id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard" role="tab" aria-controls="tab-dashboard" aria-selected="false">Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab" aria-controls="tab-orders" aria-selected="false">Orders</a>
+                            <a class="nav-link active" id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab" aria-controls="tab-orders" aria-selected="true">Orders</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">Account Details</a>
@@ -36,15 +36,100 @@
 
                 <div class="col-md-8 col-lg-9">
                     <div class="tab-content">
-                        <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
+                        <div class="tab-pane fade" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
                             <p>Hello <span class="font-weight-normal text-dark">User</span> (not <span class="font-weight-normal text-dark">User</span>? <a href="#">Log out</a>)
                                 <br>
                                 From your account dashboard you can view your <a href="#tab-orders" class="tab-trigger-link link-underline">recent orders</a>, manage your <a href="#tab-address" class="tab-trigger-link">shipping and billing addresses</a>, and <a href="#tab-account" class="tab-trigger-link">edit your password and account details</a>.</p>
                         </div><!-- .End .tab-pane -->
 
-                        <div class="tab-pane fade" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
-                            <p>No order has been made yet.</p>
-                            <a href="index.php?act=list-product" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
+                        <div class="tab-pane fade  show active" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
+                            <?php
+                                if(empty($listOrder)){
+                            ?>
+                                <p>No order has been made yet.</p>
+                                <a href="index.php?act=list-product" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
+                            <?php }else{ ?>
+                                <div class="box_title text-center" style="font-size: 25px">Order details</div> <br>
+                                <div class="container mt-3">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="mb-3">
+                                                <table class="table table-cart table-mobile">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="col-lg-2 text-center">Product</th>
+                                                            <th class="col-lg-2 text-center">Price</th>
+                                                            <th class="col-lg-2 text-center">Quantity</th>
+                                                            <th class="col-lg-2 text-center">Total</th>
+                                                            <th class="col-lg-2 text-center">Status</th>
+                                                            <th class="col-lg-2 text-center">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <?php foreach ($listOrder as $order) : ?>
+                                                        <?php
+                                                        extract($order);
+                                                        $idOrder = $order['id_cart'];
+                                                        $array_img = explode(',' , $order['img'])
+                                                        ?>
+                                                        <tr>
+                                                            <td class="product-col col-lg-2 text-center">
+                                                                <div class="product">
+                                                                    <figure class="product-media">
+                                                                        <a href="index.php?act=product&id_pro=<?=$idProduct?>">
+                                                                            <img src="<?=$img_path_product.$array_img[0]?>" alt="Product image">
+                                                                        </a>
+                                                                    </figure>
+
+                                                                    <h3 class="product-title">
+                                                                        <a href="index.php?act=product&id_pro=<?=$idProduct?>"><?=$order['name_pro']?></a>
+                                                                    </h3><!-- End .product-title -->
+                                                                </div><!-- End .product -->
+                                                            </td>
+                                                            <td class="price-col text-center"><?=$order['price']?></td>
+                                                            <td class="quantity-col text-center"><?=$order['quantityProductOrder']?></td>
+                                                            <td class="total-col text-center"><?= $order['price'] * $order['quantityProductOrder']?></td>
+                                                            <td class="status-col text-center"><?=$order['name_status']?></td>
+                                                            <td class="text-center">
+                                                                <?php
+                                                                //                                                                date order completed
+                                                                $date_completed_order = strtotime($order['dateCompleted']);
+                                                                $allowedReturnTime = 48 * 3600;
+                                                                $currentTimestamp = time();
+                                                                //                                                                Completed order/Cancelled order/Return order
+                                                                $cancelOrder = "index.php?act=cancel-order&id-order=$idOrder" ;
+                                                                $conFirmOrder = "index.php?act=confirm-order&id-order=$idOrder" ;
+                                                                $returnOrder = "index.php?act=return-order&id-order=$idOrder" ;
+                                                                if($order['statusOrder'] < 4 ) {
+//                                                                    Cancelled
+                                                                    echo '<a href="'.$cancelOrder.'" class="btn btn-cart btn-danger">Cancelled</a>';
+                                                                }else if($order['statusOrder'] == 5 || $order['statusOrder'] == 7 ){
+//                                                                    Completed order
+                                                                    echo '<a href="'.$conFirmOrder.'" class="btn btn-cart btn-primary">Completed</a> <div class="mb-1"></div> ';
+                                                                    echo '<a href="'.$returnOrder.'" class="btn btn-cart btn-primary">Return</a>';
+                                                                }else if($order['statusOrder'] == 8 && ($currentTimestamp - $date_completed_order) <= $allowedReturnTime){
+//                                                                    Return order
+                                                                    echo '<a href="'.$returnOrder.'" class="btn btn-cart btn-dark">Return</a> <div class="mb-1"></div>';
+                                                                    echo '<a href="index.php?act=product&id_pro='.$idProduct.'" class="btn btn-outline-primary-2">Buy again</a>';
+                                                                }else if($order['statusOrder'] == 8 && ($currentTimestamp - $date_completed_order) > $allowedReturnTime  || $order['statusOrder'] == 6){
+                                                                    echo '<a href="index.php?act=product&id_pro='.$idProduct.'" class="btn btn-outline-primary-2">Buy again</a>';
+                                                                }
+                                                                ?>
+
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-center" colspan="3">Delivery Shipping: <?=$order['shipping_address']?></td>
+                                                            <td class="text-center" colspan="3">Delivery phone number: <?=$order['shipping_tel']?></td>
+                                                        </tr>
+                                                    <?php endforeach; ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php }?>
                         </div><!-- .End .tab-pane -->
 
 

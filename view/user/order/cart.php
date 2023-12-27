@@ -72,7 +72,6 @@
                                     <div class="cart-product-quantity">
                                         <input type="number" class="form-control" id="quantity-<?=$productID['id_pro']?>" min="1" max="<?=$productID['quantity']?>" step="1" value="<?=$quantityProductCart?>" oninput="updateQuantity(<?=$productID['id_pro']?>,<?=$key?>)">
                                     </div><!-- End .cart-product-quantity -->
-
                                 </td>
                                 <td class="total-col" id="price-<?=$productID['id_pro']?>">$<?= $productID['price'] * (int)$quantityProductCart?></td>
                                 <td class="remove-col"><button class="btn-remove" onclick="removeFromCart(<?=$productID['id_pro']?>)"><i class="icon-close"></i></button></td>

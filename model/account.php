@@ -32,8 +32,17 @@ function list_account(){
     return pdo_query($sql);
 }
 
-function account(){
-    $sql = "SELECT * FROM account where 1 ";
+function account($id_user){
+    $sql = "SELECT * FROM account where id_user = '$id_user'";
     return pdo_query_one($sql);
+}
+function list_role(){
+    $sql = "SELECT * FROM role where 1";
+    return pdo_query($sql);
+}
+
+function update_account($name,$pass,$role,$phone,$email,$address, $idAccount){
+    $sql = "UPDATE account SET name = '$name', pass = '$pass', tel = '$phone', email = '$email', address = '$address', role = '$role' where id_user = '$idAccount' ";
+    pdo_execute($sql);
 }
 ?>
